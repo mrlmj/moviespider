@@ -48,16 +48,23 @@ class MySpider(CrawlSpider):
         # 语言
         languages = root_selector.xpath("dl/dd[5]/a/text()").extract()
         # 种子
-        links = OrderedDict()
+        links = []
         download_titles = response.xpath("//div[@class='p_list']/h2/text()").extract()
         for index, download_title in enumerate(download_titles):
             select_titles = response.xpath("//div[@class='p_list'][%d]/ul/li/a/text()" % (index + 1)).extract()
             select_magnets = response.xpath("//div[@class='p_list'][%d]/ul/li/span/a/@href" % (index + 1)).extract()
             magnet_dict = OrderedDict()
+
+            magnet_dict["label"] = download_title
+            torrent_list = []
             if len(select_titles) == len(select_magnets):
                 for i, select_title in enumerate(select_titles):
-                    magnet_dict[select_title] = select_magnets[i]
-            links[download_title] = magnet_dict
+                    torrent_dict = OrderedDict()
+                    torrent_dict["title"] = select_title
+                    torrent_dict["value"] = select_magnets[i]
+                    torrent_list.append(torrent_dict)
+            magnet_dict["torrents"] = torrent_list
+            links.append(magnet_dict)
 
         # 爬虫地址
         crawl_url = response.url
