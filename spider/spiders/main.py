@@ -29,12 +29,14 @@ class MySpider(CrawlSpider):
         # 标题
         title = root_selector.xpath("h1/text()").extract()[0]
         # 上映时间
-        time = root_selector.xpath("h1/span/text()").extract()[0].strip()[1:][:-1]
+        time = int(root_selector.xpath("h1/span/text()").extract()[0].strip()[1:][:-1])
         # 更新时间
         update_time_str = root_selector.xpath("dl/dd[1]/text()").extract()[0]
         update_time = datetime.datetime.strptime(update_time_str, "%Y-%m-%d %H:%M")
         # 简介
         introduce = response.xpath("//div[@class='c05']/p | /div").xpath("text()").extract()
+        for index, value in enumerate(introduce):
+             introduce[index] = value.strip()
         # 封面连接
         image_url = response.xpath("//div[contains(@class, 'vod_img')]/img/@src").extract()[0]
         # 评分 (js生成的页面,暂时无法抓取)

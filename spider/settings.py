@@ -93,4 +93,4 @@ HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
 MONGODB_SERVER  = "localhost"
 MONGODB_PORT = 27017
 MONGODB_DB = "movie"
-MONGODB_COLLECTION = "movies4"
+MONGODB_COLLECTION = "movies"
